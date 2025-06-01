@@ -2301,7 +2301,7 @@ distclean: mrproper
 		-o -name '.*.rej' -o -name '*%' -o -name 'core' \
 		-o -name '*.pyc' \) \
 		-type f -print | xargs rm -f
-	@rm -f boards.cfg CHANGELOG
+	@rm -f boards.cfg CHANGELOG generated_defconfig
 
 # See doc/develop/python_cq.rst
 PHONY += pylint pylint_err
