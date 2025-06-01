@@ -16,6 +16,14 @@
 		reg = <0x80000000 0x20000000>;
 	};
 
+    backlight {
+        compatible = "pwm-backlight";
+        pwms = <&pwm1 0 1000>;
+        brightness-levels = <0 1 2 3 4 5 6 8 10>;
+        default-brightness-level = <8>;
+        status = "okay";
+    };
+
 	reg_sd1_vmmc: regulator-sd1-vmmc {
 		compatible = "regulator-fixed";
 		regulator-name = "VSD_3V3";
@@ -253,41 +261,43 @@
 &lcdif {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_lcdif_dat
-		     &pinctrl_lcdif_ctrl>;
+		     &pinctrl_lcdif_ctrl
+			 &pinctrl_lcdif_reset>;
 	display = <&display0>;
 	status = "okay";
+	reset-gpios = <&gpio3 4 GPIO_ACTIVE_LOW>;
 
-	display0: display@0 {
+	display0: display {
 		bits-per-pixel = <24>;
 		bus-width = <24>;
 
 		display-timings {
 			native-mode = <&timing0>;
 
-			timing0: timing0 {
-				clock-frequency = <9200000>;
-				hactive = <480>;
-				vactive = <272>;
-				hfront-porch = <8>;
-				hback-porch = <4>;
-				hsync-len = <41>;
-				vback-porch = <2>;
-				vfront-porch = <4>;
-				vsync-len = <10>;
-				hsync-active = <0>;
-				vsync-active = <0>;
-				de-active = <1>;
-				pixelclk-active = <0>;
+			timing0: timing0_1024x768 {
+                clock-frequency = <50000000>;
+                hactive = <1024>;
+                vactive = <600>;
+                hfront-porch = <160>;
+                hback-porch = <140>;
+                hsync-len = <20>;
+                vback-porch = <20>;
+                vfront-porch = <12>;
+                vsync-len = <3>;
+
+                hsync-active = <0>;
+                vsync-active = <0>;
+                de-active = <1>;
+                pixelclk-active = <0>;
 			};
 		};
 	};
 };
 
 &pwm1 {
-	#pwm-cells = <2>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&pinctrl_pwm1>;
-	status = "okay";
+    pinctrl-names = "default";
+    pinctrl-0 = <&pinctrl_pwm1>;
+    status = "okay";
 };
 
 &pxp {
@@ -570,6 +580,12 @@
 	pinctrl_pwm1: pwm1grp {
 		fsl,pins = <
 			MX6UL_PAD_GPIO1_IO08__PWM1_OUT   0x110b0
+		>;
+	};
+
+	pinctrl_lcdif_reset: lcdifresetgrp {
+		fsl,pins = <
+			MX6UL_PAD_LCD_RESET__GPIO3_IO04     0x1b0b0
 		>;
 	};
 
