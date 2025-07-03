@@ -16,13 +16,12 @@
 		reg = <0x80000000 0x20000000>;
 	};
 
-    backlight {
-        compatible = "pwm-backlight";
-        pwms = <&pwm1 0 1000>;
-        brightness-levels = <0 1 2 3 4 5 6 8 10>;
-        default-brightness-level = <8>;
-        status = "okay";
-    };
+	backlight: backlight {
+		compatible = "gpio-backlight";
+		gpios = <&gpio1 8 GPIO_ACTIVE_HIGH>;
+		default-on;
+		status = "okay";
+	};
 
 	reg_sd1_vmmc: regulator-sd1-vmmc {
 		compatible = "regulator-fixed";
@@ -278,15 +277,15 @@
 		display-timings {
 			native-mode = <&timing0>;
 
-			timing0: timing0_1024x768 {
-                clock-frequency = <50000000>;
+			timing0: timing0 {
+                clock-frequency = <51200000>;
                 hactive = <1024>;
                 vactive = <600>;
-                hfront-porch = <160>;
+                hfront-porch = <140 160 180>;
                 hback-porch = <140>;
                 hsync-len = <20>;
                 vback-porch = <20>;
-                vfront-porch = <12>;
+                vfront-porch = <2 12 22>;
                 vsync-len = <3>;
 
                 hsync-active = <0>;
@@ -299,9 +298,10 @@
 };
 
 &pwm1 {
-    pinctrl-names = "default";
-    pinctrl-0 = <&pinctrl_pwm1>;
-    status = "okay";
+	#pwm-cells = <2>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_pwm1>;
+	status = "disabled";
 };
 
 &pxp {
@@ -467,6 +467,8 @@
 			MX6UL_PAD_ENET1_TX_DATA0__ENET1_TDATA00	0x1b0b0
 			MX6UL_PAD_ENET1_TX_DATA1__ENET1_TDATA01	0x1b0b0
 			MX6UL_PAD_ENET1_TX_CLK__ENET1_REF_CLK1	0x4001b031
+			/* used for ethphy0 reset */
+			MX6UL_PAD_SNVS_TAMPER9__GPIO5_IO09  0x1b0b0
 		>;
 	};
 
@@ -482,6 +484,8 @@
 			MX6UL_PAD_ENET2_TX_DATA0__ENET2_TDATA00	0x1b0b0
 			MX6UL_PAD_ENET2_TX_DATA1__ENET2_TDATA01	0x1b0b0
 			MX6UL_PAD_ENET2_TX_CLK__ENET2_REF_CLK2	0x4001b031
+			/* used for ethphy1 reset */
+			MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06 0x1b0b0
 		>;
 	};
 
@@ -548,10 +552,6 @@
 			MX6UL_PAD_LCD_ENABLE__LCDIF_ENABLE  0x79
 			MX6UL_PAD_LCD_HSYNC__LCDIF_HSYNC    0x79
 			MX6UL_PAD_LCD_VSYNC__LCDIF_VSYNC    0x79
-			/* used for ethphy0 reset */
-			MX6UL_PAD_SNVS_TAMPER9__GPIO5_IO09  0x79
-			/* used for ethphy1 reset */
-			MX6UL_PAD_SNVS_TAMPER6__GPIO5_IO06 0x79
 		>;
 	};
 
