@@ -132,13 +132,6 @@ int device_unbind(struct udevice *dev)
  */
 void device_free(struct udevice *dev)
 {
-	/*
-	 * free the lcdif device memory will block the kernel startup.
-	 * ICA: skip free memory.
-	 */
-	printf("%s: Skip Free memory %s\n", __func__, dev->name);
-	return;
-
 	int size;
 
 	if (dev->driver->priv_auto) {

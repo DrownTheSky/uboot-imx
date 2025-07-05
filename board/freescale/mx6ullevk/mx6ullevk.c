@@ -312,8 +312,6 @@ int board_late_init(void)
 
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
 	env_set("board_name", "EVK");
-	env_set("stdout", "vidconsole,serial");
-	env_set("stderr", "vidconsole,serial");
 
 	if (is_mx6ull_9x9_evk())
 		env_set("board_rev", "9X9");
