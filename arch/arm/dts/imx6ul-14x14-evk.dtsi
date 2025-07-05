@@ -23,6 +23,18 @@
 		status = "okay";
 	};
 
+	leds {
+		compatible = "gpio-leds";
+        pinctrl-names = "default";
+        status = "okay";
+
+        led0 {
+            pinctrl-0 = <&pinctrl_leds>;
+            gpios = <&gpio5 3 GPIO_ACTIVE_LOW>;
+			default-state = "on";
+        };
+	};
+
 	reg_sd1_vmmc: regulator-sd1-vmmc {
 		compatible = "regulator-fixed";
 		regulator-name = "VSD_3V3";
@@ -751,6 +763,12 @@
 	pinctrl_wdog: wdoggrp {
 		fsl,pins = <
 			MX6UL_PAD_LCD_RESET__WDOG1_WDOG_ANY    0x30b0
+		>;
+	};
+
+	pinctrl_leds: ledgrp {
+		fsl,pins = <
+			MX6ULL_PAD_SNVS_TAMPER3__GPIO5_IO03    0x110A0
 		>;
 	};
 };
