@@ -112,7 +112,9 @@
 	"tee_addr=0x84000000\0" \
 	"tee_file=undefined\0" \
 	"boot_fdt=try\0" \
-	"ip_dyn=yes\0" \
+	"ip_dyn=no\0" \
+	"nfsroot=/home/weidong/netfs/nfs/rootfs\0" \
+	"eth1addr=00:01:3f:2d:3e:4d\0" \
 	"splashimage=0x8c000000\0" \
 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
 	"mmcpart=" __stringify(CONFIG_SYS_MMC_IMG_LOAD_PART) "\0" \
@@ -150,7 +152,7 @@
 	"netargs=setenv bootargs console=${console},${baudrate} " \
 		BOOTARGS_CMA_SIZE \
 		"root=/dev/nfs " \
-	"ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
+	"ip=${ipaddr} nfsroot=${serverip}:${nfsroot},v3,tcp\0" \
 		"netboot=echo Booting from net ...; " \
 		"${usb_net_cmd}; " \
 		"run netargs; " \
