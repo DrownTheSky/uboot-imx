@@ -15,3 +15,6 @@ ping 172.20.10.2
 run findfdt
 run netboot
 
+# unable to work
+tftp 80000000 hello_world.bin
+go 80000000
